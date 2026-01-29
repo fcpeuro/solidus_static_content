@@ -20,13 +20,23 @@ module SolidusStaticContent
       next unless ::Spree::Backend::Config.respond_to?(:menu_items)
 
       ::Spree::Backend::Config.configure do |config|
-        config.menu_items << config.class::MenuItem.new(
-          [:pages],
-          "file-text",
-          url: :admin_pages_path,
-          condition: -> { can?(:admin, Spree::Page) },
-          match_path: "/pages"
-        )
+        config.menu_items << if Spree.solidus_gem_version >= Gem::Version.new("4.2.0")
+          config.class::MenuItem.new(
+            label: :pages,
+            icon: "ri-file-text-line",
+            url: :admin_pages_path,
+            condition: -> { can?(:admin, Spree::Page) },
+            match_path: "/pages"
+          )
+        else
+          config.class::MenuItem.new(
+            [:pages],
+            "file-text",
+            url: :admin_pages_path,
+            condition: -> { can?(:admin, Spree::Page) },
+            match_path: "/pages"
+          )
+        end
       end
     end
   end
