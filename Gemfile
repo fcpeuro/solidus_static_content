@@ -1,47 +1,47 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-branch = ENV.fetch('SOLIDUS_BRANCH', 'main')
-gem 'solidus', github: 'solidusio/solidus', branch: branch
+branch = ENV.fetch("SOLIDUS_BRANCH", "main")
+gem "solidus", github: "solidusio/solidus", branch: branch
 
 # The solidus_frontend gem has been pulled out since v3.2
-if branch >= 'v3.2'
-  gem 'solidus_frontend'
-elsif branch == 'main'
-  gem 'solidus_frontend', github: 'solidusio/solidus_frontend'
+if branch >= "v3.2"
+  gem "solidus_frontend"
+elsif branch == "main"
+  gem "solidus_frontend", github: "solidusio/solidus_frontend"
 else
-  gem 'solidus_frontend', github: 'solidusio/solidus', branch: branch
+  gem "solidus_frontend", github: "solidusio/solidus", branch: branch
 end
 
-rails_version = ENV.fetch('RAILS_VERSION', '~> 7.0')
+rails_version = ENV.fetch("RAILS_VERSION", "~> 7.0")
 # CI passes bare versions such as "8.0", which Bundler reads as an exact
 # requirement that no released gem satisfies. Treat them as pessimistic instead.
 rails_version = "~> #{rails_version}.0" if rails_version.match?(/\A\d+\.\d+\z/)
-gem 'rails', rails_version
+gem "rails", rails_version
 
 # Extract the minimum Rails version from the version requirement.
 # For example, both "~> 7.0" and ">= 7.0" translate to a minimum of "7.0".
 rails_req = Gem::Requirement.new(rails_version)
-min_rails_version = rails_req.requirements.map(&:last).min || Gem::Version.new('0')
+min_rails_version = rails_req.requirements.map(&:last).min || Gem::Version.new("0")
 
 # Determine the sqlite3 version based on the minimum Rails version.
 # If the minimum Rails version is less than 7.2, use "~> 1.4"; otherwise, use "~> 2.0".
 sqlite_version =
-  if min_rails_version < Gem::Version.new('7.2')
+  if min_rails_version < Gem::Version.new("7.2")
     "~> 1.4"
   else
     "~> 2.0"
   end
 
-case ENV.fetch('DB', nil)
-when 'mysql'
-  gem 'mysql2'
-when 'postgresql'
-  gem 'pg'
+case ENV.fetch("DB", nil)
+when "mysql"
+  gem "mysql2"
+when "postgresql"
+  gem "pg"
 else
-  gem 'sqlite3', sqlite_version
+  gem "sqlite3", sqlite_version
 end
 
 gemspec
@@ -51,4 +51,4 @@ gemspec
 #
 # We use `send` instead of calling `eval_gemfile` to work around an issue with
 # how Dependabot parses projects: https://github.com/dependabot/dependabot-core/issues/1658.
-send(:eval_gemfile, 'Gemfile-local') if File.exist? 'Gemfile-local'
+send(:eval_gemfile, "Gemfile-local") if File.exist? "Gemfile-local"
