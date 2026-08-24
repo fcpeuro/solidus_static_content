@@ -14,8 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  rubocop:
-    name: RuboCop
+  standardrb:
+    name: StandardRB
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -25,5 +25,5 @@ jobs:
           ruby-version: "3.4"
           bundler-cache: true
           rubygems: latest
-      - name: Run RuboCop
-        run: bundle exec rubocop --parallel
+      - name: Run StandardRB
+        run: bundle exec standardrb
