@@ -16,13 +16,15 @@ else
 end
 
 rails_version = ENV.fetch('RAILS_VERSION', '~> 7.0')
+# CI passes bare versions such as "8.0", which Bundler reads as an exact
+# requirement that no released gem satisfies. Treat them as pessimistic instead.
+rails_version = "~> #{rails_version}.0" if rails_version.match?(/\A\d+\.\d+\z/)
 gem 'rails', rails_version
 
 # Extract the minimum Rails version from the version requirement.
-# For example, a requirement of "~> 7.0" translates to ">= 7.0" and "< 8.0".
+# For example, both "~> 7.0" and ">= 7.0" translate to a minimum of "7.0".
 rails_req = Gem::Requirement.new(rails_version)
-# Find the minimum version specified by a ">=" constraint, if any.
-min_rails_version = rails_req.requirements.find { |op, _| op == '>=' }&.last || Gem::Version.new('0')
+min_rails_version = rails_req.requirements.map(&:last).min || Gem::Version.new('0')
 
 # Determine the sqlite3 version based on the minimum Rails version.
 # If the minimum Rails version is less than 7.2, use "~> 1.4"; otherwise, use "~> 2.0".
