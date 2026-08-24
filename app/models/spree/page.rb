@@ -5,11 +5,11 @@ module Spree
     acts_as_list
     default_scope -> { order("position ASC") }
 
-    has_and_belongs_to_many :stores, join_table: 'spree_pages_stores'
+    has_and_belongs_to_many :stores, join_table: "spree_pages_stores"
 
     validates :title, presence: true
     validates :slug, :body, presence: true, if: :not_using_foreign_link?
-    validates :layout, presence: { if: :render_layout_as_partial? }
+    validates :layout, presence: {if: :render_layout_as_partial?}
     validates :stores, presence: true
 
     validates :slug, uniqueness: true, if: :not_using_foreign_link?
@@ -39,7 +39,7 @@ module Spree
 
     def normalize_slug
       # ensure that all slugs start with a slash
-      slug.prepend('/') if not_using_foreign_link? && (!slug.start_with? '/')
+      slug.prepend("/") if not_using_foreign_link? && (!slug.start_with? "/")
     end
 
     def not_using_foreign_link?

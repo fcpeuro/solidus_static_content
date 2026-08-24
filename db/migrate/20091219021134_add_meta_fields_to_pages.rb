@@ -6,5 +6,6 @@ class AddMetaFieldsToPages < SolidusSupport::Migration[4.2]
     add_column :spree_pages, :meta_description, :string
   end
 
-  def self.down; end
+  def self.down
+  end
 end

@@ -2,7 +2,7 @@
 
 module Spree
   class StaticContentController < Spree::StoreController
-    helper 'spree/products'
+    helper "spree/products"
     layout :determine_layout
 
     def show

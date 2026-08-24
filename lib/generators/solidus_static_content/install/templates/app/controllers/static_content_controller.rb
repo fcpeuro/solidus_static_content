@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StaticContentController < StoreController
-  helper 'spree/products'
+  helper "spree/products"
   layout :determine_layout
 
   def show
