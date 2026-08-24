@@ -10,7 +10,7 @@ RSpec.describe SolidusStaticContent::Engine do
 
     it "sets the correct icon for the pages menu item" do
       menu_item = Spree::Backend::Config.menu_items.find { |item| item.label.to_sym == :pages }
-      expect(menu_item.icon).to eq("file-text")
+      expect(menu_item.icon).to eq("ri-file-text-line")
     end
 
     it "sets the correct match_path for the pages menu item" do
